@@ -11,7 +11,7 @@ It should help you start your project and give you continuous status updates on 
 
 Contact person: [Dhruv Sahnan](mailto:dhruv.sahnan@mbzuai.ac.ae) 
 
-[MBZUAI] (https://mbzuai.ac.ae)
+[MBZUAI](https://mbzuai.ac.ae/)
 [UKP Lab](https://www.ukp.tu-darmstadt.de/) | [TU Darmstadt](https://www.tu-darmstadt.de/
 )
 
