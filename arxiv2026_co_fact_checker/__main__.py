@@ -1,4 +1,4 @@
-"""Entry point for arxiv2026_co_fact_checker."""
+"""Entry point for co_factchecker."""
 
 from .cli import main  # pragma: no cover
 

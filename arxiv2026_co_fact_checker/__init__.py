@@ -1,8 +1,6 @@
-from .base import BaseClass
-
-
+from .verifier import Verifier
 
 __all__ = [
     "subpackage",
-    "BaseClass"
+    "Verifier"
     ]
