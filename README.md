@@ -1,116 +1,71 @@
-<p  align="center">
-  <img src='logo.png' width='200'>
-</p>
-
-# arxiv2026_co_fact_checker
+# Co-FactChecker
 [![Arxiv](https://img.shields.io/badge/Arxiv-YYMM.NNNNN-red?style=flat-square&logo=arxiv&logoColor=white)](https://put-here-your-paper.com)
 [![License](https://img.shields.io/github/license/UKPLab/arxiv2026-co-fact-checker)](https://opensource.org/licenses/Apache-2.0)
-[![Python Versions](https://img.shields.io/badge/Python-3.9-blue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
-[![CI](https://github.com/UKPLab/arxiv2026-co-fact-checker/actions/workflows/main.yml/badge.svg)](https://github.com/UKPLab/arxiv2026-co-fact-checker/actions/workflows/main.yml)
+[![Python Versions](https://img.shields.io/badge/Python-3.10-blue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 
-This is the official template for new Python projects at UKP Lab. It was adapted for the needs of UKP Lab from the excellent [python-project-template](https://github.com/rochacbruno/python-project-template/) by [rochacbruno](https://github.com/rochacbruno).
+This is the official repository of the paper "Co-FactChecker: A Framework for Human-AI Collaborative Claim Verification Using Large Reasoning Models" currently under review. It contains scripts for our implementation of the Co-FactChecker framework.
 
 It should help you start your project and give you continuous status updates on the development through [GitHub Actions](https://docs.github.com/en/actions).
 
-> **Abstract:** The study of natural language processing (NLP) has gained increasing importance in recent years, with applications ranging from machine translation to sentiment analysis. Properly managing Python projects in this domain is of paramount importance to ensure reproducibility and facilitate collaboration. The template provides a structured starting point for projects and offers continuous status updates on development through GitHub Actions. Key features include a basic setup.py file for installation, packaging, and distribution, documentation structure using mkdocs, testing structure using pytest, code linting with pylint, and entry points for executing the program with basic CLI argument parsing. Additionally, the template incorporates continuous integration using GitHub Actions with jobs to check, lint, and test the project, ensuring robustness and reliability throughout the development process.
+> **Abstract:** Professional fact-checkers rely on domain knowledge and deep contextual understanding to verify claims. Large language models~(LLMs) and large reasoning models (LRMs) lack such grounding and primarily reason from available evidence alone, creating a mismatch between expert-led and fully automated claim verification. To mitigate this gap, we posit human--AI collaboration as a more promising path forward, where expert feedback, grounded in real-world knowledge and domain expertise, guides the model's reasoning. However, existing LRMs are hard to calibrate to natural language feedback, particularly in a multi-turn interaction setup. We propose **Co-FactChecker**, a framework for human--AI collaborative claim verification. We introduce a new interaction paradigm that treats the model's thinking trace as a shared scratchpad. Co-FactChecker translates expert feedback into _trace-edits_ that introduce targeted modifications to the trace, sidestepping the shortcomings of dialogue-based interaction. We provide theoretical results showing that trace-editing offers advantages over multi-turn dialogue, and our automatic evaluations demonstrate that Co-FactChecker outperforms existing autonomous and human--AI collaboration approaches. Human evaluations further show that Co-FactChecker is preferred over multi-turn dialogue, producing higher quality reasoning and verdicts along with relatively easier to interpret and more useful thinking traces.
 
-Contact person: [Federico Tiblias](mailto:federico.tiblias@tu-darmstadt.de) 
+Contact person: [Dhruv Sahnan](mailto:dhruv.sahnan@mbzuai.ac.ae) 
 
+[MBZUAI] (https://mbzuai.ac.ae)
 [UKP Lab](https://www.ukp.tu-darmstadt.de/) | [TU Darmstadt](https://www.tu-darmstadt.de/
 )
 
-Don't hesitate to send us an e-mail or report an issue, if something is broken (and it shouldn't be) or if you have further questions.
-
-
 ## Getting Started
 
-> **DO NOT CLONE OR FORK**
+Simply clone the repository, create a virtual environment and install dependencies:
 
-If you want to set up this template:
+  ```bash
+  git clone git@github.com:UKPLab/arxiv2026-co-fact-checker.git
+  cd arxiv2026-co-fact-checker/
+  python3 -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements-dev.txt
+  ```
 
-1. Request a repository on UKP Lab's GitHub by following the standard procedure on the wiki. It will install the template directly. Alternatively, set it up in your personal GitHub account by clicking **[Use this template](https://github.com/rochacbruno/python-project-template/generate)**.
-2. Wait until the first run of CI finishes. Github Actions will commit to your new repo with a "✅ Ready to clone and code" message.
-3. Delete optional files: 
-    - If you don't need automatic documentation generation, you can delete folder `docs`, file `.github\workflows\docs.yml` and `mkdocs.yml`
-    - If you don't want automatic testing, you can delete folder `tests` and file `.github\workflows\tests.yml`
-    - If you do not wish to have a project page, delete folder `static` and files `.nojekyll`, `index.html`
-4. Prepare a virtual environment:
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install .
-pip install -r requirements-dev.txt # Only needed for development
-```
-5. Adapt anything else (for example this file) to your project. 
+You also need to export your OPENAI_API_KEY as an environment variable:
 
-6. Read the file [ABOUT_THIS_TEMPLATE.md](ABOUT_THIS_TEMPLATE.md)  for more information about development.
+  ```bash
+  export OPENAI_API_KEY=<your-api-key>
+  ```
+
+Additionally, you need to start a local Ollama server to run local models (Verifier and Editor):
+
+  ```bash
+  ollama serve
+  ```
+
+Finally, you will need to set up a vector database for evidence retrieval. We use Qdrant, and the scripts support this database. Qdrant allows a free cluster that you may use for setting up your vector database. In the paper, we ran experiments on the [ExClaim](https://github.com/znhy1024/JustiLM) dataset, which is built on top of the [WatClaimCheck](https://github.com/nxii/watclaimcheck). We suggest you to set up the ExClaim dataset in the same format as in [example_data/data.json](example_data/data.json) to run Co-FactChecker on the full dataset. You may set up the Qdrant vector database for the ExClaim dataset using evidence documents provided with the WatClaimCheck dataset.
 
 ## Usage
 
-### Using the classes
+We offer the Co-FactChecker framework as a module. We also provide an example datapoint to run the framework on for testing it for yourself.
 
-To import classes/methods of `arxiv2026_co_fact_checker` from inside the package itself you can use relative imports: 
+  ```bash
+  python -m arxiv2026_co_fact_checker --file example_data/data.json --output_file example_data/output.json
+  ```
 
-```py
-from .base import BaseClass # Notice how I omit the package name
+### Supported parameters
 
-BaseClass().something()
-```
-
-To import classes/methods from outside the package (e.g. when you want to use the package in some other project) you can instead refer to the package name:
-
-```py
-from arxiv2026_co_fact_checker import BaseClass # Notice how I omit the file name
-from arxiv2026_co_fact_checker.subpackage import SubPackageClass # Here it's necessary because it's a subpackage
-
-BaseClass().something()
-SubPackageClass().something()
-```
-
-### Using scripts
-
-This is how you can use `arxiv2026_co_fact_checker` from command line:
-
-```bash
-$ python -m arxiv2026_co_fact_checker
-```
-
-### Expected results
-
-After running the experiments, you should expect the following results:
-
-(Feel free to describe your expected results here...)
-
-### Parameter description
-
-* `x, --xxxx`: This parameter does something nice
-
-* ...
-
-* `z, --zzzz`: This parameter does something even nicer
-
-## Development
-
-Read the FAQs in [ABOUT_THIS_TEMPLATE.md](ABOUT_THIS_TEMPLATE.md) to learn more about how this template works and where you should put your classes & methods. Make sure you've correctly installed `requirements-dev.txt` dependencies
+- `--file <filename>`: path to the input data. Expects a json file. Use [example_data/data.json](example_data/data.json) to check data format for preparing your own dataset.
+- `--output_file <filename>`: path to save the output from the Co-FactChecker framework for the claims in the input dataset.
+- `--verifier_model <model_name>`: name of the Ollama supported model for the verifier in the Co-FactChecker framework. Make sure you use a model that supports a thinking mode, and also exposes the thinking tokens as a thinking trace. Default = `deepseek-r1:32b`.
+- `--editor_model <model_name>`: name of the Ollama supported model for the editor in the Co-FactChecker framework. Default = `llama3.2:3b`.
+- `--oracle_model <openai_model_name>`: name of the OpenAI model for the oracle in the Co-FactChecker framework. Only OpenAI models are supported for now. Default = `gpt-4o-mini`.
+- `--qdrant_url <url>`: URL to the qdrant vector database cluster.
+- `--qdrant_evidence_collection <collection_name>`: name of the qdrant collection on the vector database to use. Default = "evidence_collection".
+- `--qdrant_num_searches <int>`: number of search results to retrieve per search on the qdrant vector database. Default = 3.
+- `--qdrant_score_threshold <float>`: score threshold for filtering qdrant search results by cosine similarity between text embeddings. Default = 0.7.
+- `--qdrant_api_key <key>`: you API key to access the qdrant vector database.
 
 ## Cite
 
-Please use the following citation:
-
-```
-@InProceedings{smith:20xx:CONFERENCE_TITLE,
-  author    = {Smith, John},
-  title     = {My Paper Title},
-  booktitle = {Proceedings of the 20XX Conference on XXXX},
-  month     = mmm,
-  year      = {20xx},
-  address   = {Gotham City, USA},
-  publisher = {Association for XXX},
-  pages     = {XXXX--XXXX},
-  url       = {http://xxxx.xxx}
-}
-```
+Citation releasing soon.
 
 ## Disclaimer
 
-> This repository contains experimental software and is published for the sole purpose of giving additional background details on the respective publication. 
+> This repository contains experimental software and is published for the sole purpose of giving additional background details on the respective research publication. 
