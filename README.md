@@ -1,5 +1,5 @@
 # Co-FactChecker
-[![Arxiv](https://img.shields.io/badge/Arxiv-YYMM.NNNNN-red?style=flat-square&logo=arxiv&logoColor=white)](https://put-here-your-paper.com)
+[![Arxiv](https://img.shields.io/badge/Arxiv-2604.13706-red?style=flat-square&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2604.13706)
 [![License](https://img.shields.io/github/license/UKPLab/arxiv2026-co-fact-checker)](https://opensource.org/licenses/Apache-2.0)
 [![Python Versions](https://img.shields.io/badge/Python-3.10-blue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 
